@@ -68,34 +68,30 @@ const register = async (req, res, next) => {
 const login = async (req, res, next) => {
     try {
         const { email, password } = req.validatedData;
-        
+        console.log('LOGIN ATTEMPT:', { email, password });
         // Find user
         const result = await pool.query(
             'SELECT * FROM users WHERE email = $1',
             [email]
         );
-        
+        console.log('USER QUERY RESULT:', result.rows);
         if (result.rows.length === 0) {
             return res.status(401).json({ 
                 error: 'Invalid email or password',
                 code: 'INVALID_CREDENTIALS'
             });
         }
-        
         const user = result.rows[0];
-        
-        // Verify password
+        console.log('PASSWORD HASH:', user.password_hash);
         const isValidPassword = await bcrypt.compare(password, user.password_hash);
-        
+        console.log('BCRYPT COMPARE RESULT:', isValidPassword);
         if (!isValidPassword) {
             return res.status(401).json({ 
                 error: 'Invalid email or password',
                 code: 'INVALID_CREDENTIALS'
             });
         }
-        
         const token = generateToken(user);
-        
         res.json({
             message: 'Login successful',
             token,
@@ -107,7 +103,6 @@ const login = async (req, res, next) => {
                 avatarUrl: user.avatar_url
             }
         });
-        
     } catch (error) {
         next(error);
     }
