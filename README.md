@@ -14,14 +14,14 @@
 ### 1. Clone the Repository
 
 ```sh
-git clone <your-repo-url>
+git clone https://github.com/pnkj999/StackIt-A-Minimal-Q-A-Forum-Platform.git
 cd stackit
 ```
 
 ### 2. Database Setup
 
 - Create a PostgreSQL database (e.g., `stackit_db`).
-- Create a user with privileges (e.g., `sam`).
+- Create a user with privileges 
 - Run all SQL migrations in `database/migrations/`:
 
 ```sh
